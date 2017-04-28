@@ -46,11 +46,12 @@ class ITMSAppStore
     locale_name = row_data[0]
     output = "<locale name=\"#{locale_name}\">"
     output += "<title>#{row_data[1]}</title>"
-    output += "<description>#{description_string(locale_name)}</description>"
-    output += "<keywords>#{keywords(row_data[2])}</keywords>"
-    output += "<software_url>#{row_data[3]}</software_url>"
-    output += "<privacy_url>#{row_data[4]}</privacy_url>"
-    output += "<support_url>#{row_data[5]}</support_url>"
+    #output += "<description>#{description_string(locale_name)}</description>"
+    output += "<description>#{row_data[2]}</description>"
+    output += "<keywords>#{keywords(row_data[3])}</keywords>"
+    output += "<software_url>#{row_data[4]}</software_url>"
+    output += "<privacy_url>#{row_data[5]}</privacy_url>"
+    output += "<support_url>#{row_data[6]}</support_url>"
     if @@base_image_names
       output += "<software_screenshots>#{software_screenshots(locale_name)}</software_screenshots>"
     end

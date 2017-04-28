@@ -3,14 +3,23 @@ require_relative 'itms_utils.rb'
 
 class ITMSLeaderboards
 
-  def self.locale_string(locale_name, title, formatter_type, image_name)
-    image_data_string = ITMSUtils.image_data_string(@@input_images_dir, image_name)
-    @@images_used << "#{@@input_images_dir}/#{image_name}"
+  def self.locale_string(locale_name, title, formatterSuffix, formatterSuffixSingular, formatter_type, image_name)
+    hasImage = false
+
+    if image_name.strip != ''
+      image_data_string = ITMSUtils.image_data_string(@@input_images_dir, image_name)
+      @@images_used << "#{@@input_images_dir}/#{image_name}"
+      hasImage = true
+    end 
 
     output = "<locale name=\"#{locale_name}\">"
     output += "<title>#{title}</title>"
+    output += "<formatter_suffix>#{formatterSuffix}</formatter_suffix>"
+    output += "<formatter_suffix_singular>#{formatterSuffixSingular}</formatter_suffix_singular>"
     output += "<formatter_type>#{formatter_type}</formatter_type>"
-    output += "<leaderboard_image>#{image_data_string}</leaderboard_image>"
+    if hasImage
+      output += "<leaderboard_image>#{image_data_string}</leaderboard_image>"
+    end
     output += "</locale>"
   end
 
@@ -21,9 +30,11 @@ class ITMSLeaderboards
     locale_row_data.each do |row_data|
       locale_name = row_data[1]
       title = row_data[2]
-      formatter_type = row_data[3]
-      image_name = row_data[4]
-      locale_strings += locale_string(locale_name, title, formatter_type, image_name)
+      formatterSuffix = row_data[3]
+      formatterSuffixSingular = row_data[4]
+      formatter_type = row_data[5]
+      image_name = row_data[6]
+      locale_strings += locale_string(locale_name, title, formatterSuffix, formatterSuffixSingular, formatter_type, image_name)
     end
 
     locale_strings
