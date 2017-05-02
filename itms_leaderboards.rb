@@ -13,9 +13,9 @@ class ITMSLeaderboards
     end 
 
     output = "<locale name=\"#{locale_name}\">"
-    output += "<title>#{title}</title>"
-    output += "<formatter_suffix>#{formatterSuffix}</formatter_suffix>"
-    output += "<formatter_suffix_singular>#{formatterSuffixSingular}</formatter_suffix_singular>"
+    output += "<title><![CDATA[#{title}]]></title>"
+    output += "<formatter_suffix><![CDATA[#{formatterSuffix}]]></formatter_suffix>"
+    output += "<formatter_suffix_singular><![CDATA[#{formatterSuffixSingular}]]></formatter_suffix_singular>"
     output += "<formatter_type>#{formatter_type}</formatter_type>"
     if hasImage
       output += "<leaderboard_image>#{image_data_string}</leaderboard_image>"

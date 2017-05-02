@@ -6,11 +6,11 @@ class ITMSAchievements
   def self.locale_string(locale_name, title, before_description, after_description, image_name)
     image_data_string = ITMSUtils.image_data_string(@@input_images_dir, image_name)
     @@images_used << "#{@@input_images_dir}/#{image_name}"
-
+    
     output = "<locale name=\"#{locale_name}\">"
-    output += "<title>#{title}</title>"
-    output += "<before_earned_description>#{before_description}</before_earned_description>"
-    output += "<after_earned_description>#{after_description}</after_earned_description>"
+    output += "<title><![CDATA[#{title}]]></title>"
+    output += "<before_earned_description><![CDATA[#{before_description}]]></before_earned_description>"
+    output += "<after_earned_description><![CDATA[#{after_description}]]></after_earned_description>"
     output += "<achievement_after_earned_image>#{image_data_string}</achievement_after_earned_image>"
     output += "</locale>"
   end

@@ -10,11 +10,20 @@ class ITMSAppStore
     contents
   end
 
+  def self.whats_new_string(locale_name)
+    filename = "#{@@locales_directory}/#{locale_name}/app_store_whats_new.txt"
+    if !File.file?(filename)
+      return nil
+    end
+    contents = File.open(filename, 'rb').read
+    contents.force_encoding('UTF-8')
+    contents
+  end
   def self.keywords(raw_input)
     keywords_xml = ''
     keywords = raw_input.split(',')
     keywords.each do |keyword|
-      keywords_xml += "<keyword>#{keyword.strip}</keyword>"
+      keywords_xml += "<keyword><![CDATA[#{keyword.strip}]]></keyword>"
     end
     keywords_xml
   end
@@ -45,13 +54,18 @@ class ITMSAppStore
   def self.locale_string(row_data)
     locale_name = row_data[0]
     output = "<locale name=\"#{locale_name}\">"
-    output += "<title>#{row_data[1]}</title>"
-    #output += "<description>#{description_string(locale_name)}</description>"
-    output += "<description>#{row_data[2]}</description>"
-    output += "<keywords>#{keywords(row_data[3])}</keywords>"
-    output += "<software_url>#{row_data[4]}</software_url>"
-    output += "<privacy_url>#{row_data[5]}</privacy_url>"
-    output += "<support_url>#{row_data[6]}</support_url>"
+    output += "<title><![CDATA[#{row_data[1]}]]></title>"
+    output += "<description><![CDATA[#{description_string(locale_name)}]]></description>"
+
+    whats_new = whats_new_string(locale_name)
+    if whats_new != nil
+      output += "<version_whats_new><![CDATA[#{whats_new_string(locale_name)}]]></version_whats_new>"
+    end
+
+    output += "<keywords>#{keywords(row_data[2])}</keywords>"
+    output += "<software_url>#{row_data[3]}</software_url>"
+    output += "<privacy_url>#{row_data[4]}</privacy_url>"
+    output += "<support_url>#{row_data[5]}</support_url>"
     if @@base_image_names
       output += "<software_screenshots>#{software_screenshots(locale_name)}</software_screenshots>"
     end

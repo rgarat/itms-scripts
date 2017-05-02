@@ -5,8 +5,8 @@ class ITMSIAP
 
   def self.locale_string(locale_name, title, description)
     output = "<locale name=\"#{locale_name}\">"
-    output += "<title>#{title}</title>"
-    output += "<description>#{description}</description>"
+    output += "<title><![CDATA[#{title}]]></title>"
+    output += "<description><![CDATA[#{description}]]></description>"
     output += "</locale>"
     output
   end
