@@ -77,7 +77,7 @@ class ITMSAppStore
     @@base_image_names = base_image_names
     @@images_used = Set.new
 
-    input_locales = CSV.read(input_locale_filename, { :col_sep => "\t" })
+    input_locales = CSV.read(input_locale_filename, { :col_sep => "\t" ,:quote_char=>'"'})
     input_locales.delete_at(0)
     puts "[ITMS] Found #{input_locales.count} app store languages"
 
