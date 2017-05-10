@@ -39,7 +39,7 @@ class ITMSAchievements
 
     achievement = "<achievement position=\"#{position}\">"
     achievement += "<achievement_id>#{id}</achievement_id>"
-    achievement += "<reference_name>#{reference_name}</reference_name>"
+    achievement += "<reference_name><![CDATA[#{reference_name}]]></reference_name>"
     achievement += "<points>#{points}</points>"
     achievement += "<hidden>#{hidden}</hidden>"
     achievement += "<locales>#{locale_strings_for_id(id)}</locales>"
