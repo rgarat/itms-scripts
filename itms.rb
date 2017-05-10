@@ -17,6 +17,7 @@ end
 
 skip_download = ARGV.include? '--skip-download'
 only_download = ARGV.include? '--only-download'
+force_upload = ARGV.include? '--force-upload'
 
 unless File.exists? config_filename
   puts "[ITMS] Could not find config filename #{config_filename}"
@@ -47,6 +48,8 @@ unless skip_download
     puts "[ITMS] [ERROR] Failed to download itms package #{vendor_id}, check #{log_name} for more info"
     exit 2
   end
+  `cp #{itms_package_name}/metadata.xml #{itms_package_name}/metadata.old.xml`
+
   if only_download
     puts "[ITMS] Completed download"
     exit 0
@@ -106,7 +109,7 @@ if config['verify']
 end
 
 # Submit if needed
-if config['upload_after_verify']
+if config['upload_after_verify'] || force_upload
   puts "[ITMS] Uploading itms package #{vendor_id}"
   unless ITMSUtils.upload_metadata(username, password, package_filepath, log_name)
     puts "[ITMS] [ERROR] Failed to submit metadata for itms package #{vendor_id}, check #{log_name} for more info"
