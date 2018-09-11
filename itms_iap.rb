@@ -58,11 +58,11 @@ class ITMSIAP
     @@input_images_dir = File.expand_path(input_images_directory)
     @@images_used = Set.new
 
-    input_locales = CSV.read(input_locale_filename)
+    input_locales = CSV.read(input_locale_filename, {:col_sep => "\t"})
     input_locales.delete_at(0)
     @@locale_row_data_by_id = ITMSUtils.locale_row_data_by_id(input_locales)
 
-    input_metadata = CSV.read(input_metadata_filename)
+    input_metadata = CSV.read(input_metadata_filename, {:col_sep => "\t"})
     input_metadata.delete_at(0)
     puts "[ITMS] Found #{input_metadata.count} in app purchases"
 

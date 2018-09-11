@@ -29,6 +29,7 @@ username = ENV['ITMS_USERNAME'] if username.nil?
 password = config['password']
 password = ENV['ITMS_PASSWORD'] if password.nil?
 vendor_id = config['vendor_id']
+puts "[ITMS] WARNING: remember to use apple id as value of vendor_id in config file"
 version = config['version']
 
 destination = '.'
