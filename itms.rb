@@ -63,11 +63,30 @@ if config['generate_app_store_xml']
 # Generate the app store xml and copy the images needed for upload
   puts "[ITMS] Generating App Store xml..."
   base_image_names = config['app_store_image_base_names']
-  if !config['upload_app_store_screenshots']
-    base_image_names = nil
+
+  upload_app_store_screenshots = false
+  if config['upload_app_store_screenshots']
+    upload_app_store_screenshots = config['upload_app_store_screenshots']
   end
-  app_store_xml, images_used = ITMSAppStore.app_store_xml(version, 'app_store/app_store_locales.tsv', 'app_store', base_image_names)
+
+  screenshot_count = 5
+  if config['screenshot_count']
+    screenshot_count = config['screenshot_count']
+  end
+
+  upload_video_previews = false
+  if config['upload_video_previews']
+    upload_video_previews = config['upload_video_previews']
+  end
+
+  video_preview_count = 1
+  if config['video_preview_count']
+    video_preview_count = config['video_preview_count']
+  end
+
+  app_store_xml, images_used, previews_used = ITMSAppStore.app_store_xml(version, 'app_store/app_store_locales.tsv', 'app_store', base_image_names, upload_app_store_screenshots, screenshot_count, upload_video_previews, video_preview_count)
   ITMSUtils.copy_images(images_used, itms_package_name)
+  ITMSUtils.copy_images(previews_used, itms_package_name)
 end
 
 if config['generate_iap_xml']

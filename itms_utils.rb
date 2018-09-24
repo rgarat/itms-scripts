@@ -24,10 +24,18 @@ class ITMSUtils
 
   def self.image_data_string(image_dir, image_name)
     full_path = "#{image_dir}/#{image_name}"
-
     output = "<size>#{File.size(full_path)}</size>"
     output += "<file_name>#{image_name}</file_name>"
     output += "<checksum type=\"md5\">#{Digest::MD5.file(full_path).hexdigest}</checksum>"
+  end
+
+  def self.preview_data_string(preview_dir, preview_name)
+    full_path = "#{preview_dir}/#{preview_name}"
+    output = "<data_file role=\"source\">"
+    output += "<size>#{File.size(full_path)}</size>"
+    output += "<file_name>#{preview_name}</file_name>"
+    output += "<checksum type=\"md5\">#{Digest::MD5.file(full_path).hexdigest}</checksum>"
+    output += "</data_file>"
   end
 
   def self.locale_row_data_by_id(input_locales)
@@ -54,6 +62,8 @@ class ITMSUtils
       metadata_contents = f.read
       f.close
     end
+
+    #metadata_contents.sub!(/<package version="software5.10"/m, '<package version="software5.9"')
 
     altered_version = version.gsub(/\./, '\.')
     version_regex = "<version string=\"#{altered_version}\">.*<\\/version>"
