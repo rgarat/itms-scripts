@@ -31,15 +31,21 @@ class ITMSAppStore
   def self.software_screenshots(locale_name)
     screenshots_xml = ''
 
-    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro']
+    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro', 'iOS-5.8-in']
 
     display_targets.each_with_index do |display_target, display_target_index|
-      5.times do |i|
+      
+      if @@base_image_names[display_target_index].empty?
+        next
+      end
+      
+      @@screenshot_count.times do |i|
         image_name = "#{@@base_image_names[display_target_index]}_#{i.to_s.rjust(2, '0')}.png"
         localized_image_name = "#{locale_name}_#{image_name}"
         localized_directory = "#{@@locales_directory}/#{locale_name}"
 
         image_data_string = ITMSUtils.image_data_string(localized_directory, localized_image_name)
+
         @@images_used << "#{localized_directory}/#{localized_image_name}"
 
         screenshots_xml += "<software_screenshot display_target=\"#{display_target}\" position=\"#{i + 1}\">"
@@ -49,6 +55,35 @@ class ITMSAppStore
     end
 
     screenshots_xml
+  end
+
+  def self.app_previews(locale_name)
+    app_preview_xml = ''
+
+    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro', 'iOS-5.8-in']
+
+    display_targets.each_with_index do |display_target, display_target_index|
+
+      if @@base_image_names[display_target_index].empty?
+        next
+      end
+
+      @@preview_count.times do |i|
+        preview_name = "#{@@base_image_names[display_target_index]}_#{i.to_s.rjust(2, '0')}.mp4"
+        localized_preview_name = "#{locale_name}_#{preview_name}"
+        localized_directory = "#{@@locales_directory}/#{locale_name}"
+
+        preview_data_string = ITMSUtils.preview_data_string(localized_directory, localized_preview_name)
+
+        @@previews_used << "#{localized_directory}/#{localized_preview_name}"
+
+        app_preview_xml += "<app_preview display_target=\"#{display_target}\" position=\"#{i + 1}\">"
+        app_preview_xml += preview_data_string
+        app_preview_xml += "</app_preview>"
+      end
+    end
+
+    app_preview_xml
   end
 
   def self.locale_string(row_data)
@@ -66,16 +101,26 @@ class ITMSAppStore
     output += "<software_url>#{row_data[3]}</software_url>"
     output += "<privacy_url>#{row_data[4]}</privacy_url>"
     output += "<support_url>#{row_data[5]}</support_url>"
-    if @@base_image_names
+
+    if @@upload_screenshots
       output += "<software_screenshots>#{software_screenshots(locale_name)}</software_screenshots>"
+    end
+    if @@upload_previews
+      output += "<app_previews>#{app_previews(locale_name)}</app_previews>"
     end
     output += "</locale>"
   end
 
-  def self.app_store_xml(version, input_locale_filename, locales_directory, base_image_names)
+  def self.app_store_xml(version, input_locale_filename, locales_directory, base_image_names, upload_screenshots, screenshot_count, upload_previews, preview_count)
     @@locales_directory = locales_directory
     @@base_image_names = base_image_names
     @@images_used = Set.new
+    @@previews_used = Set.new
+    
+    @@upload_screenshots = upload_screenshots
+    @@screenshot_count = screenshot_count
+    @@upload_previews = upload_previews
+    @@preview_count = preview_count
 
     input_locales = CSV.read(input_locale_filename, { :col_sep => "\t" ,:quote_char=>'"'})
     input_locales.delete_at(0)
@@ -87,7 +132,7 @@ class ITMSAppStore
     end
     output += "</locales></version>"
 
-    return output, @@images_used
+    return output, @@images_used, @@previews_used
   end
 
 end
