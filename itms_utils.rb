@@ -5,7 +5,7 @@ TRANSPORTER_PATH = '/Applications/Xcode.app/Contents/Applications/Application\ L
 
 class ITMSUtils
   def self.download_metadata(username, password, vendor_id, destination, log_name)
-    cmd = "#{TRANSPORTER_PATH} -m lookupMetadata -u \"#{username}\" -p \"#{password}\" -vendor_id #{vendor_id} -destination #{destination} &> #{log_name}"
+    cmd = "#{TRANSPORTER_PATH} -m lookupMetadata -u \"#{username}\" -p \"#{password}\" -apple_id #{vendor_id} -destination #{destination} &> #{log_name}"
 
     unless system(cmd)
       return false
