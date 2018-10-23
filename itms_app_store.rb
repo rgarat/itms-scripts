@@ -31,8 +31,8 @@ class ITMSAppStore
   def self.software_screenshots(locale_name)
     screenshots_xml = ''
 
-    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro', 'iOS-5.8-in']
-
+    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro', 'iOS-5.8-in', 'iOS-6.5-in']
+    
     display_targets.each_with_index do |display_target, display_target_index|
       
       if @@base_image_names[display_target_index].empty?
@@ -60,7 +60,7 @@ class ITMSAppStore
   def self.app_previews(locale_name)
     app_preview_xml = ''
 
-    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro', 'iOS-5.8-in']
+    display_targets = ['iOS-3.5-in', 'iOS-4-in', 'iOS-4.7-in', 'iOS-5.5-in', 'iOS-iPad', 'iOS-iPad-Pro', 'iOS-5.8-in', 'iOS-6.5-in']
 
     display_targets.each_with_index do |display_target, display_target_index|
 
