@@ -1,7 +1,18 @@
 require 'digest'
 require 'set'
 
-TRANSPORTER_PATH = '/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/itms/bin/iTMSTransporter'
+PATH_XCODE = '/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/itms/bin/iTMSTransporter'
+PATH_STANDALONE = '/Applications/Transporter.app/Contents/itms/bin/iTMSTransporter'
+
+if File.exists? PATH_XCODE
+  puts "[ITMS] Using transporter in Xcode path"
+  TRANSPORTER_PATH = PATH_XCODE
+elsif File.exists? PATH_STANDALONE
+  puts "[ITMS] Using transporter in standalone app"
+  TRANSPORTER_PATH = PATH_STANDALONE
+else
+  puts "[ITMS] could not find iTMSTransporter"
+end
 
 class ITMSUtils
   def self.download_metadata(username, password, vendor_id, destination, log_name)
